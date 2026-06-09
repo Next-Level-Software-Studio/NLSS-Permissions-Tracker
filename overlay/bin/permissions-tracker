@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description="Script de automação (Commit / Apply)")
+    parser.add_argument(
+        "comando", 
+        choices=["commit", "apply"], 
+        help="Escolha o comando que deseja executar."
+    )
+    args = parser.parse_args() # Processa o que foi digitado no terminal
+    if args.comando == "commit":
+        print(">> Executando ações de COMMIT...")
+        
+    elif args.comando == "apply":
+        print(">> Executando ações de APPLY...")
+
+if __name__ == "__main__":
+    main()
