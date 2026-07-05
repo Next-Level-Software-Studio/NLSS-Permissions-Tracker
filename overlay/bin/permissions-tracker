@@ -2,24 +2,28 @@
 import argparse
 import sys
 
-def execute_commit(file_path):
-    print(f'Saving permissions to file: "{file_path}"...')
+def execute_commit(file_path, folder_path):
+    if folder_path:
+        print(f'Saving permissions to file: "{file_path}" using folder: "{folder_path}"...')
+    else:
+        print(f'Saving permissions to file: "{file_path}"...')
 
 def execute_apply(file_path, folder_path):
-    if folder_path:
+    if file_path:
         print(f">> Executing APPLY actions with file: '{file_path}' and folder: '{folder_path}'...")
     else:
-        print(f">> Executing APPLY actions with file: '{file_path}' (no additional folder)...")
+        print(f">> Executing APPLY actions with folder: '{folder_path}' (no additional file)...")
 
 def main():
     parser = argparse.ArgumentParser(description="Automation script for Commit and Apply processes.")
     
     parser.add_argument("command", nargs="?", choices=["commit", "apply", "help"], default="help", help="Choose the desired command. If omitted, displays this help screen.")
-    parser.add_argument("--file", type=str, default=None, help="Required file path for commit or apply commands.")
-    parser.add_argument("--folder", type=str, default=None, help="[Optional] Folder path. Valid only for the apply command.")
+    parser.add_argument("--file", type=str, default=None, help="[Optional] File path for commit or apply commands.")
+    parser.add_argument("--folder", type=str, default=None, help="Folder path. Required for apply, optional for commit.")
     
     args = parser.parse_args()
 
+    # Validações para o comando 'help'
     if args.command == "help":
         if args.file is not None or args.folder is not None:
             print("[ERROR] The 'help' command does not accept --file or --folder flags.")
@@ -27,16 +31,16 @@ def main():
             sys.exit(1)
         parser.print_help()
         sys.exit(0)
-    if args.command == "commit" and args.folder is not None:
-        print("[ERROR] The 'commit' command does not accept the --folder flag.")
-        parser.print_usage()
-        sys.exit(1)
-    if args.file is None:
-        parser.error("the following arguments are required: --file")
+        
+    # Validações para o comando 'apply' (onde --folder é obrigatório)
+    if args.command == "apply" and args.folder is None:
+        parser.error("the following arguments are required: --folder")
 
+    # Execução dos comandos
     if args.command == "commit":
-        execute_commit(args.file)
+        execute_commit(args.file, args.folder)
     elif args.command == "apply":
         execute_apply(args.file, args.folder)
+
 if __name__ == "__main__":
     main()
