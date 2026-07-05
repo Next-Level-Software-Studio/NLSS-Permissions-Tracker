@@ -5,16 +5,19 @@ from pathlib import Path
 
 def commit(file_path, folder_path):
     if file_path is None:
-        
+        print("[Warning] No permissions file specified. Using default.")
+        file_path = Path('.').resolve() / ".permissions"
     if folder_path is None:
         folder_path = Path(file_path).parent
     print(f'Saving permissions from folder: "{folder_path}", to file: "{file_path}"...')
 
 def apply(file_path, folder_path):
-    if file_path:
-        print(f">> Executing APPLY actions with file: '{file_path}' and folder: '{folder_path}'...")
-    else:
-        print(f">> Executing APPLY actions with folder: '{folder_path}' (no additional file)...")
+    if file_path is None:
+        print("[Warning] No permissions file specified. Using default.")
+        file_path = Path('.').resolve() / ".permissions"
+    if folder_path is None:
+        folder_path = Path(file_path).parent
+    print(f'Applying permissions from file: "{file_path}", to folder: "{folder_path}"...')
 
 def main():
     parser = argparse.ArgumentParser(description="Automation script for Commit and Apply processes.")
