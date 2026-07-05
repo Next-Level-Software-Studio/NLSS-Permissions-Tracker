@@ -4,12 +4,12 @@ import sys
 from pathlib import Path
 
 def inicialize(file_path=None, folder_path=None):
-    if (folder_path is None) or (Path(folder_path).is_dir() is False):
-        print("[Warning] No permissions folder specified. Using CWD.")
+    if (folder_path is None) or (Path(folder_path).is_dir(follow_symlinks=True) is False):
+        print("[WARNING] No permissions folder specified. Using CWD.")
         folder_path = Path('.').resolve()
 
-    if (file_path is None) or (Path(file_path).is_file() is False):
-        print("[Warning] No permissions file specified. Using default.")
+    if (file_path is None) or (Path(file_path).is_file(follow_symlinks=True) is False):
+        print("[WARNING] No permissions file specified. Using default.")
         file_path = folder_path / ".permissions"
     return folder_path, file_path
     
@@ -18,8 +18,8 @@ def commit(file_path, folder_path):
     print(f'Saving permissions from folder: "{folder_path}", to file: "{file_path}"...')
 
     if not any(folder_path.iterdir()):
-        print("[Warning] The specified folder is empty.")
-        print("[Warning] The permissions file will be created, but no permissions will be saved.")
+        print("[WARNING] The specified folder is empty.")
+        print("[WARNING] The permissions file will be created, but no permissions will be saved.")
         file_path.touch()
 
 def apply(file_path, folder_path):
