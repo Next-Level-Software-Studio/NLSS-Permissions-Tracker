@@ -4,27 +4,28 @@ import sys
 from pathlib import Path
 
 def inicialize(file_path=None, folder_path=None):
+    if folder_path is None:
+        print("[Warning] No permissions folder specified. Using CWD.")
+        folder_path = Path('.').resolve()
     if file_path is None:
         print("[Warning] No permissions file specified. Using default.")
-        file_path = Path('.').resolve() / ".permissions"
-    if folder_path is None:
-        folder_path = Path(file_path).parent
+        file_path = folder_path / ".permissions"
     return folder_path, file_path
     
 def commit(file_path, folder_path):
     folder_path, file_path = inicialize()
     print(f'Saving permissions from folder: "{folder_path}", to file: "{file_path}"...')
-    
+
 def apply(file_path, folder_path):
     folder_path, file_path = inicialize()
     print(f'Applying permissions from file: "{file_path}", to folder: "{folder_path}"...')
 
 def main():
-    parser = argparse.ArgumentParser(description="Automation script for Commit and Apply processes.")
+    parser = argparse.ArgumentParser(description="Automation script, for applying and saving files and folders permissions.")
     
-    parser.add_argument("command", nargs="?", choices=["commit", "apply", "help"], default="help", help="Choose the desired command. If omitted, displays this help screen.")
-    parser.add_argument("--file", type=str, default=None, help="[Optional] File path for commit or apply commands.")
-    parser.add_argument("--folder", type=str, default=None, help="Folder path. Required for apply, optional for commit.")
+    parser.add_argument("command", nargs="?", choices=["commit", "apply", "help"], default="help", help="")
+    parser.add_argument("--file", type=str, default=None, help="")
+    parser.add_argument("--folder", type=str, default=None, help="")
     
     args = parser.parse_args()
 
