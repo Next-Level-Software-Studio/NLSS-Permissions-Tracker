@@ -31,6 +31,8 @@ def commit(file_path, folder_path):
 
     if FILE_IS_EMPTY is False:
         for i in folder_path.rglob("*"):
+            print(f"Saving permissions for: {i}...")
+            
 
 
         
