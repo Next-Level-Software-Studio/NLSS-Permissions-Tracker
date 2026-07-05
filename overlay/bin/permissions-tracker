@@ -7,7 +7,7 @@ def inicialize(file_path=None, folder_path=None):
     if (folder_path is None) or (Path(folder_path).is_dir() is False):
         print("[Warning] No permissions folder specified. Using CWD.")
         folder_path = Path('.').resolve()
-        
+
     if (file_path is None) or (Path(file_path).is_file() is False):
         print("[Warning] No permissions file specified. Using default.")
         file_path = folder_path / ".permissions"
