@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 import argparse
 import sys
+from pathlib import Path
 
-def execute_commit(file_path, folder_path):
-    if folder_path:
-        print(f'Saving permissions to file: "{file_path}" using folder: "{folder_path}"...')
-    else:
-        print(f'Saving permissions to file: "{file_path}"...')
+def commit(file_path, folder_path):
+    if file_path is None:
+        
+    if folder_path is None:
+        folder_path = Path(file_path).parent
+    print(f'Saving permissions from folder: "{folder_path}", to file: "{file_path}"...')
 
-def execute_apply(file_path, folder_path):
+def apply(file_path, folder_path):
     if file_path:
         print(f">> Executing APPLY actions with file: '{file_path}' and folder: '{folder_path}'...")
     else:
@@ -23,7 +25,6 @@ def main():
     
     args = parser.parse_args()
 
-    # Validações para o comando 'help'
     if args.command == "help":
         if args.file is not None or args.folder is not None:
             print("[ERROR] The 'help' command does not accept --file or --folder flags.")
@@ -32,15 +33,13 @@ def main():
         parser.print_help()
         sys.exit(0)
         
-    # Validações para o comando 'apply' (onde --folder é obrigatório)
     if args.command == "apply" and args.folder is None:
         parser.error("the following arguments are required: --folder")
 
-    # Execução dos comandos
     if args.command == "commit":
-        execute_commit(args.file, args.folder)
+        commit(args.file, args.folder)
     elif args.command == "apply":
-        execute_apply(args.file, args.folder)
+        apply(args.file, args.folder)
 
 if __name__ == "__main__":
     main()
