@@ -18,13 +18,24 @@ def commit(file_path, folder_path):
     print(f'Saving permissions from folder: "{folder_path}", to file: "{file_path}"...')
 
     if not any(folder_path.iterdir()):
-        print("[WARNING] The specified folder is empty.")
+        print(f"[WARNING] The folder '{folder_path}' is empty.")
         print("[WARNING] The permissions file will be created, but no permissions will be saved.")
         file_path.touch()
 
 def apply(file_path, folder_path):
     folder_path, file_path = inicialize(file_path=file_path, folder_path=folder_path)
     print(f'Applying permissions from file: "{file_path}", to folder: "{folder_path}"...')
+    
+    with open(file_path, 'r') as file:
+        for linha in file:
+            if linha.strip() != "":
+                FILE_IS_EMPTY = False
+                break
+
+    if FILE_IS_EMPTY:
+        print(f"[WARNING] The file '{file_path}' is empty.")
+        print("[WARNING] No permissions will be applied.")
+        return
 
 def main():
     parser = argparse.ArgumentParser(description="Automation script, for applying and saving files and folders permissions.")
